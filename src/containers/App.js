@@ -2,28 +2,42 @@ import React, { Component } from 'react';
 import '../App.css';
 // import {fetchData} from '../helpers'
 
+
 import Profile from '../components/Profile';
 import SearchForm from '../components/SearchForm'
+import {eventsData} from './eventsData';
 
 class App extends Component {
   constructor(){
-    super()
+		super()
+		this.searchFormInput = React.createRef();
+
     this.state = {
-      username: 'lauralouiset',
-      userDetails: {}
+      userName: 'lauralouiset',
+			userDetails: {},
+			userForks : [],
+			userPulls : [],
+			searchFormValue : ''
     }
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
-    e.currentTarget.reset();
+	handleChange = (e) => {
+		this.setState({searchFormValue : e.target.value})
+	}
 
+  handleSubmit = e => {
+		e.preventDefault();
+		console.log(this.state.searchFormValue);
+		const {userName} = this.state
+		this.setState({userName})
+    e.currentTarget.reset();
   }
 
   componentDidMount(){
     // const res =  fetchData('https://api.github.com/users/lauralouiset');
 
-  fetch('https://api.github.com/users/lauralouiset')
+		// FETCH DATA ABOUT USER PROFILE
+  fetch(`https://api.github.com/users/${this.state.userName}`)
       .then( res=> res.json()
       .then(res => {
         const userDetails = {
@@ -33,19 +47,58 @@ class App extends Component {
           followers: res.followers,
           following: res.following
         }
-        console.log(userDetails)
         this.setState({userDetails});
       })
       .catch(err => console.log(err)))
 
+			// FETCH DATA ABOUT USER FORK EVENTS
+		// fetch(`https://api.github.com/users/${this.state.userName}/events`)
+		// 	.then( res=> res.json())
+		// 	.then( res => {
+		// 		return res.filter(event => event.type === 'ForkEvent')
+		// 	.reduce((acc, event) => {
+		// 		const name = event.payload.forkee.name
+		// 		acc[name] = {};
+		// 		acc[name].name = name;
+		// 		acc[name].url = event.payload.forkee.html_url;
+		// 		acc[name].forkedfrom = `https://github.com/${event.repo.name}`
+		// 		// acc[name].url = event.payload.forkee.html_url
+		// 		// console.log(event.payload.forkee.html_url);
+		// 		console.log(acc);
+		// 		return acc;
+		// 	}, {} )
+		// 	}
+		// 		)
+		// 	.catch(err=> console.log(err));
 
+		eventsData.filter(event => event.type === 'ForkEvent')
+			.reduce((acc, event) => {
+				const name = event.payload.forkee.name
+				acc[name] = {};
+				acc[name].name = name;
+				acc[name].url = event.payload.forkee.html_url;
+				acc[name].forkedfrom = `https://github.com/${event.repo.name}`
+				// acc[name].url = event.payload.forkee.html_url
+				// console.log(event.payload.forkee.html_url);
+				console.log(acc);
+				return acc;
+			}, {} )
+
+
+		// FETCH DATA ABOUT USER PULL REQUEST EVENTS
+		// fetch(`https://api.github.com/users/pkanal/events`)
+		// 	.then(res => res.json())
+		// 	.then(res => res.filter(event => event.type === 'PullRequestEvent'))
+		// 	.catch(err => console.log(err));
+
+			// end of COMPONENT DID MOUNT
   }
 
   render() {
     return (
       <div className="App">
-        <SearchForm handleSubmit={this.handleSubmit}/>
-        <Profile username={this.state.username} userDetails={this.state.userDetails}/>
+        <SearchForm handleChange ={this.handleChange} handleSubmit={this.handleSubmit} searchFormValue={this.state.searchFormValue}/>
+        <Profile userDetails={this.state.userDetails}/>
       </div>
     );
   }

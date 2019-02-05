@@ -2,7 +2,8 @@ import React from 'react';
 
 const SearchForm = props => {
 
-  const input = React.createRef();
+
+
 
     return(
       <form onSubmit={props.handleSubmit}>
@@ -10,7 +11,8 @@ const SearchForm = props => {
         <input 
           type="text" 
           name="username"
-          ref={input}
+					value={props.formValue}
+					onChange={props.handleChange}
         />
         <button type="submit">Search</button>
       </form>
