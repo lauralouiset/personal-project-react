@@ -1,14 +1,20 @@
 import React from 'react';
 
-class SearchForm extends React.Component{
+const SearchForm = props => {
 
-  render(){
+  const input = React.createRef();
+
     return(
-      <form>
-        <input type="text"/>
+      <form onSubmit={props.handleSubmit}>
+        <label htmlFor="username">Enter Your Github Username</label>
+        <input 
+          type="text" 
+          name="username"
+          ref={input}
+        />
+        <button type="submit">Search</button>
       </form>
     )
-  }
 }
 
 export default SearchForm;
