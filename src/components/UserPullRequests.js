@@ -1,6 +1,6 @@
 import React from "react";
 
-const PullRequests = props => {
+const UserPullRequests = props => {
 
 	return (
 		<div>
@@ -10,4 +10,4 @@ const PullRequests = props => {
 
 };
 
-export default PullRequests;
+export default UserPullRequests;

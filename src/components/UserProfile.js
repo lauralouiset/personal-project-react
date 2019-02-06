@@ -1,18 +1,17 @@
 import React from 'react';
 
-import Profile from './Profile';
-import Forks from './Forks';
-import PullRequests from 'PullRequests';
+import UserDetails from './UserDetails';
+import UserForks from './UserForks';
+import UserPullRequests from './UserPullRequests';
 
 
 const UserProfile = props => {
 
-
 		return(
 			<div className="profile">
-				<Profile userDetails={props.userDetails}/>
-				<Forks />
-				<PullRequests />
+				<UserDetails userDetails={props.userDetails}/>
+				<UserForks userForks={props.userForks}/>
+				<UserPullRequests />
 			</div>
 		)
 	}

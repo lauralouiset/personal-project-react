@@ -1,13 +1,13 @@
 import React from 'react'
 
-const Profile = props => {
+const UserDetails = props => {
 
 		const { name, location, avatar_url, followers, following} = props.userDetails;
 
   return(
       <div className="profile">
-					<h3>{name}</h3>
           <img src={avatar_url} alt={name}/>
+					<h3>{name}</h3>
           <p> Location: {location}</p>
           <p>Following: {following}</p>
           <p>Followers: {followers}</p>
@@ -17,4 +17,4 @@ const Profile = props => {
 }
 
 
-export default Profile;
+export default UserDetails;
