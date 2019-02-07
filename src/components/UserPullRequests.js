@@ -15,7 +15,6 @@ const UserPullRequests = ({userPulls}) => {
 																				pullRequest={pullRequest}
 																				/>)
 			: <p>You have no recent Pull Requests.</p>
-			
 			}
 		</div>
 	)

@@ -71,10 +71,10 @@ class App extends Component {
 		this.setState({userForks});
 	}
 
-	// filters events and returns user pull requests
-	returnUserPulls = res => {
+	// filters events and returns user pull request events made BY user
+	returnUserPulls = (res, userName) => {
 		const userPulls = res
-			.filter(event => event.type === "PullRequestEvent")
+			.filter(event => event.type === "PullRequestEvent" && event.payload.pull_request.user.login === userName)
 			.reduce( (acc, event) => {
 				// console.log(event);
 				const pullRequest = {
@@ -101,7 +101,7 @@ class App extends Component {
       .then(res => res.json())
       .then(res => {
         this.returnUserForks(res);
-        this.returnUserPulls(res);
+        this.returnUserPulls(res, userName);
       })
       .catch(err => console.log(err));
 	} 
@@ -129,7 +129,6 @@ class App extends Component {
         />
 
 				{ this.state.loginError ? (<ErrorMessage />) : null}
-
 				{this.state.isLoggedIn ? (<UserProfile
 																		userDetails={this.state.userDetails}
 																		userForks={this.state.userForks}
@@ -137,8 +136,6 @@ class App extends Component {
 																	/>) 
 				: (<p>Please Log In To see Details</p>)
 				}
-
-
       </div>
     );
   }
