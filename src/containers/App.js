@@ -61,7 +61,8 @@ class App extends Component {
 					id: event.id,
 					repo_name: event.payload.forkee.name,
 					repo_url: event.payload.forkee.html_url,
-					forkedFrom: `https://github.com/${event.repo.name}`
+					forkedFrom: `https://github.com/${event.repo.name}`,
+					updated_at: event.payload.forkee.updated_at
 				};
 
 				const forksArray = [...acc];
@@ -81,10 +82,11 @@ class App extends Component {
 					id: event.id,
 					repo_name: event.repo.name,
 					repo_url: `https://github.com/${event.repo.name}`,
-					pullRequest_url: event.payload.pull_request.url,
-					pullRequest_status: event.payload.pull_request.state,
-					pullRequest_merged: event.payload.pull_request.merged,
-					pullRequest_title: event.payload.pull_request.title
+					PR_url: event.payload.pull_request.url,
+					PR_status: event.payload.pull_request.state,
+					PR_merged: event.payload.pull_request.merged,
+					PR_title: event.payload.pull_request.title,
+					pr_updatedat: event.payload.pull_request.updated_at
 				}
 
 				const pullsArray = [...acc];
@@ -128,7 +130,7 @@ class App extends Component {
           searchFormValue={this.state.searchFormValue}
         />
 
-				{ this.state.loginError ? (<ErrorMessage />) : null}
+				{this.state.loginError ? (<ErrorMessage />) : null}
 				{this.state.isLoggedIn ? (<UserProfile
 																		userDetails={this.state.userDetails}
 																		userForks={this.state.userForks}

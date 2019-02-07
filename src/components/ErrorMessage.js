@@ -4,7 +4,7 @@ const ErrorMessage = props => {
 
 	return(
 		<div className="errorMessage">
-			<p>There was an error logging in.</p>
+			<p>That username cannot be found. Please try again!</p>
 		</div>
 	)
 
