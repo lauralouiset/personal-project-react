@@ -5,8 +5,8 @@ const UserDetails = props => {
 		const { name, location, avatar_url, followers, following} = props.userDetails;
 
   return(
-      <div className="profile">
-          <img src={avatar_url} alt={name}/>
+      <div className="userDetails">
+          <img className="avatar" src={avatar_url} alt={name}/>
 					<h3>{name}</h3>
           <p> Location: {location}</p>
           <p>Following: {following}</p>

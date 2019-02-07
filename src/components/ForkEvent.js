@@ -6,7 +6,7 @@ const ForkEvent = props => {
 	const {url, name, forkedFrom} = props.forkEvent;
 
 	return(
-		<div clasName="forkEvent">
+		<div className="forkEvent">
 			<p><a href={url}>{name}</a></p>
 			<p><a href="{forkedFrom">{forkedFrom}</a></p>
 		</div>

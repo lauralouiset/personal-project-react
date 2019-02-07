@@ -4,7 +4,7 @@ import ForkEvent from './ForkEvent'
 
 const UserForks = props => {
 	return (
-    <div>
+    <div className="userForks">
       <h2> Your Forked Repos</h2>
 			{props.userForks.map( forkEvent => {
 				return (

@@ -3,7 +3,7 @@ import React from "react";
 const UserPullRequests = props => {
 
 	return (
-		<div>
+		<div className="userPulls">
 			<h2> Your Pull Requests</h2>
 		</div>
 	)
