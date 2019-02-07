@@ -4,7 +4,8 @@ import '../App.css';
 
 import token from "../accesstoken";
 import UserProfile from '../components/UserProfile';
-import SearchForm from '../components/SearchForm'
+import SearchForm from '../components/SearchForm';
+import ErrorMessage from '../components/ErrorMessage';
 
 
 class App extends Component {
@@ -13,7 +14,7 @@ class App extends Component {
     this.state = {
       userName: "",
 			searchFormValue: "",
-			errorMessage: "",
+			loginError: false,
 			isLoggedIn : false,
 			userDetails: {},
 			userForks: [],
@@ -27,11 +28,11 @@ class App extends Component {
 			.then(res => {
 				// res.statusText === "OK" ? this.setState({ isLoggedIn: true }) : this.setState({ isLoggedIn: false })
 				if (res.statusText === "OK") {
-					this.setState({ userName, isLoggedIn: true })
+					this.setState({ userName, isLoggedIn: true, loginError: false })
 					console.log('User authenticated')
 					this.getUserEvents(userName);
 				} else {
-					this.setState({ isLoggedIn: false })
+					this.setState({ isLoggedIn: false, loginError: true })
 					console.log("Username not found")
 				}
 				return res;
@@ -58,14 +59,13 @@ class App extends Component {
 			.reduce((acc, event) => {
 				const fork = {
 					id: event.id,
-					name: event.payload.forkee.name,
-					url: event.payload.forkee.html_url,
+					repo_name: event.payload.forkee.name,
+					repo_url: event.payload.forkee.html_url,
 					forkedFrom: `https://github.com/${event.repo.name}`
 				};
 
 				const forksArray = [...acc];
 				forksArray.push(fork);
-
 				return forksArray;
 			}, []);
 		this.setState({userForks});
@@ -75,8 +75,24 @@ class App extends Component {
 	returnUserPulls = res => {
 		const userPulls = res
 			.filter(event => event.type === "PullRequestEvent")
+			.reduce( (acc, event) => {
+				// console.log(event);
+				const pullRequest = {
+					id: event.id,
+					repo_name: event.repo.name,
+					repo_url: `https://github.com/${event.repo.name}`,
+					pullRequest_url: event.payload.pull_request.url,
+					pullRequest_status: event.payload.pull_request.state,
+					pullRequest_merged: event.payload.pull_request.merged,
+					pullRequest_title: event.payload.pull_request.title
+				}
 
-		console.log(userPulls);
+				const pullsArray = [...acc];
+				pullsArray.push(pullRequest);
+				return pullsArray;
+			
+			}, [] )
+		this.setState({userPulls});
 	};
 
 	// requests user events from Github API events endpoint
@@ -90,10 +106,12 @@ class App extends Component {
       .catch(err => console.log(err));
 	} 
 
+	// Change handler for search form input
   handleChange = e => {
     this.setState({ searchFormValue: e.target.value });
 	};
 	
+	// submit handler for search form
   handleSubmit = e => {
 		e.preventDefault();
 		const userName = this.state.searchFormValue;
@@ -109,10 +127,13 @@ class App extends Component {
           handleSubmit={this.handleSubmit}
           searchFormValue={this.state.searchFormValue}
         />
+
+				{ this.state.loginError ? (<ErrorMessage />) : null}
+
 				{this.state.isLoggedIn ? (<UserProfile
-																		userName={this.state.userName}
 																		userDetails={this.state.userDetails}
 																		userForks={this.state.userForks}
+																		userPulls={this.state.userPulls}
 																	/>) 
 				: (<p>Please Log In To see Details</p>)
 				}

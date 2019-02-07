@@ -3,11 +3,11 @@ import React from 'react';
 
 const ForkEvent = props => {
 
-	const {url, name, forkedFrom} = props.forkEvent;
+	const {repo_url, repo_name, forkedFrom} = props.forkEvent;
 
 	return(
 		<div className="forkEvent">
-			<p><a href={url}>{name}</a></p>
+			<h3><a href={repo_url}>{repo_name}</a></h3>
 			<p><a href="{forkedFrom">{forkedFrom}</a></p>
 		</div>
 

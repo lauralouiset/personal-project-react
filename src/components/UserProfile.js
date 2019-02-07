@@ -10,12 +10,10 @@ const UserProfile = props => {
 				<UserDetails userDetails={props.userDetails} />
 				<div className="userHistory">
 					<UserForks userForks={props.userForks} />
-					<UserPullRequests />
+					<UserPullRequests userPulls={props.userPulls}/>
 				</div>
 			</div>
 		);
 }
-
-
 
 export default UserProfile;
