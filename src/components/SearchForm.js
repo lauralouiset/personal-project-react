@@ -12,7 +12,7 @@ const SearchForm = props => {
         value={props.formValue}
         onChange={props.handleChange}
       />
-      <Button>Search</Button>
+      <Button isLoggedIn={props.isLoggedIn} />
     </form>
   );
 };

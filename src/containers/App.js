@@ -6,30 +6,28 @@ import Header from "../components/Header";
 import UserProfile from "../components/UserProfile";
 import SearchForm from "../components/SearchForm";
 import ErrorMessage from "../components/ErrorMessage";
+import Footer from "../components/Footer";
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      userName: "",
+      username: "",
       searchFormValue: "",
       loginError: false,
       isLoggedIn: false,
-      userDetails: {},
-      userForks: [],
-      userPulls: []
+      userDetails: {}
     };
   }
 
-  authenticateUser(userName) {
-    fetch(`https://api.github.com/users/${userName}?access_token=${token}`)
+  authenticateUser(username) {
+    fetch(`https://api.github.com/users/${username}?access_token=${token}`)
       // .then(res => console.log(res))
       .then(res => {
         // res.statusText === "OK" ? this.setState({ isLoggedIn: true }) : this.setState({ isLoggedIn: false })
         if (res.statusText === "OK") {
-          this.setState({ userName, isLoggedIn: true, loginError: false });
+          this.setState({ username, isLoggedIn: true, loginError: false });
           console.log("User authenticated");
-          this.getUserEvents(userName);
         } else {
           this.setState({ isLoggedIn: false, loginError: true });
           console.log("Username not found");
@@ -50,67 +48,6 @@ class App extends Component {
       .catch(err => console.log("error", err));
   }
 
-  // filters events and gets user forkevents
-  returnUserForks = res => {
-    const userForks = res
-      .filter(event => event.type === "ForkEvent")
-      .reduce((acc, event) => {
-        const fork = {
-          id: event.id,
-          repo_name: event.payload.forkee.name,
-          repo_url: event.payload.forkee.html_url,
-          forkedFrom: `https://github.com/${event.repo.name}`,
-          updated_at: event.payload.forkee.updated_at
-        };
-
-        const forksArray = [...acc];
-        forksArray.push(fork);
-        return forksArray;
-      }, []);
-    this.setState({ userForks });
-  };
-
-  // filters events and returns user pull request events made BY user
-  returnUserPulls = (res, userName) => {
-    const userPulls = res
-      .filter(
-        event =>
-          event.type === "PullRequestEvent" &&
-          event.payload.pull_request.user.login === userName
-      )
-      .reduce((acc, event) => {
-        // console.log(event);
-        const pullRequest = {
-          id: event.id,
-          repo_name: event.repo.name,
-          repo_url: `https://github.com/${event.repo.name}`,
-          PR_url: event.payload.pull_request.url,
-          PR_status: event.payload.pull_request.state,
-          PR_merged: event.payload.pull_request.merged,
-          PR_title: event.payload.pull_request.title,
-          pr_updatedat: event.payload.pull_request.updated_at
-        };
-
-        const pullsArray = [...acc];
-        pullsArray.push(pullRequest);
-        return pullsArray;
-      }, []);
-    this.setState({ userPulls });
-  };
-
-  // requests user events from Github API events endpoint
-  getUserEvents = userName => {
-    fetch(
-      `https://api.github.com/users/${userName}/events?access_token=${token}`
-    )
-      .then(res => res.json())
-      .then(res => {
-        this.returnUserForks(res);
-        this.returnUserPulls(res, userName);
-      })
-      .catch(err => console.log(err));
-  };
-
   // Change handler for search form input
   handleChange = e => {
     this.setState({ searchFormValue: e.target.value });
@@ -119,8 +56,8 @@ class App extends Component {
   // submit handler for search form
   handleSubmit = e => {
     e.preventDefault();
-    const userName = this.state.searchFormValue;
-    this.authenticateUser(userName);
+    const username = this.state.searchFormValue;
+    this.authenticateUser(username);
     e.currentTarget.reset();
   };
 
@@ -133,19 +70,21 @@ class App extends Component {
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
             searchFormValue={this.state.searchFormValue}
+            isLoggedIn={this.state.isLoggedIn}
           />
 
           {this.state.loginError ? <ErrorMessage /> : null}
           {this.state.isLoggedIn ? (
             <UserProfile
+              isLoggedIn={this.state.isLoggedIn}
+              username={this.state.username}
               userDetails={this.state.userDetails}
-              userForks={this.state.userForks}
-              userPulls={this.state.userPulls}
             />
           ) : (
             <p>Please Log In To see Details</p>
           )}
         </main>
+        <Footer />
       </React.Fragment>
     );
   }
