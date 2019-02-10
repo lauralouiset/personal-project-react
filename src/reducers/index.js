@@ -9,6 +9,6 @@ export default reducers;
 
 // const logInReducer = (action) => {
 // 	if(action.type === 'LOG_OUT'){
-
+// return () => {}
 // 	}
 // }

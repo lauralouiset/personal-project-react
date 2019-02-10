@@ -33,3 +33,9 @@ export const setUserDetails = () => {
 };
 
 // ACTION FOR GETTING EVENTS
+
+export const fetchUserEvents = () => {
+  return {
+    type: "FETCH_USER_EVENTS"
+  };
+};

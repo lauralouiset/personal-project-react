@@ -6,7 +6,7 @@ const Button = props => {
   if (props.isLoggedIn) {
     buttonText = "Log Out";
   } else {
-    buttonText = "Search";
+    buttonText = "Log In";
   }
 
   return <button type="Submit">{buttonText}</button>;

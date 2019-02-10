@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import "../App.css";
+import { connect } from "react-redux";
 
-import token from "../accesstoken";
+import "../App.css";
+import token from "../constants/accesstoken";
 import Header from "../components/Header";
 import UserProfile from "../components/UserProfile";
 import SearchForm from "../components/SearchForm";
@@ -90,4 +91,9 @@ class App extends Component {
   }
 }
 
-export default App;
+const ConnectedApp = connect(
+  null,
+  null
+)(App);
+
+export default ConnectedApp;

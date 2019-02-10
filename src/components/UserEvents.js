@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-import token from "../accesstoken";
+import token from "../constants/accesstoken";
+import { fetchUserEvents } from "../actions/";
 import UserForks from "./UserForks";
 import UserPullRequests from "./UserPullRequests";
 
@@ -9,14 +11,15 @@ class UserEvents extends Component {
     super();
     props = this.props;
     this.state = {
+      userEvents: [],
       userForks: [],
       userPulls: []
     };
   }
 
   // filters events and gets user forkevents
-  returnUserForks = res => {
-    const userForks = res
+  returnUserForks = events => {
+    const userForks = events
       .filter(event => event.type === "ForkEvent")
       .reduce((acc, event) => {
         const fork = {
@@ -27,16 +30,14 @@ class UserEvents extends Component {
           updated_at: event.payload.forkee.updated_at
         };
 
-        const forksArray = [...acc];
-        forksArray.push(fork);
-        return forksArray;
+        return [...acc, fork];
       }, []);
     this.setState({ userForks });
   };
 
   // filters events and returns user pull request events made BY user
-  returnUserPulls = (res, username) => {
-    const userPulls = res
+  returnUserPulls = (events, username) => {
+    const userPulls = events
       .filter(
         event =>
           event.type === "PullRequestEvent" &&
@@ -54,9 +55,7 @@ class UserEvents extends Component {
           pr_updatedat: event.payload.pull_request.updated_at
         };
 
-        const pullsArray = [...acc];
-        pullsArray.push(pullRequest);
-        return pullsArray;
+        return [...acc, pullRequest];
       }, []);
     this.setState({ userPulls });
   };
@@ -88,4 +87,9 @@ class UserEvents extends Component {
   }
 }
 
-export default UserEvents;
+const ConnectedUserEvents = connect(
+  null,
+  { fetchUserEvents }
+)(UserEvents);
+
+export default ConnectedUserEvents;
