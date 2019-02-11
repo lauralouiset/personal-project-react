@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import token from "../constants/accesstoken";
 import { fetchUserEvents } from "../actions/";
 import UserForks from "./UserForks";
 import UserPullRequests from "./UserPullRequests";
@@ -9,9 +8,8 @@ import UserPullRequests from "./UserPullRequests";
 class UserEvents extends Component {
   constructor(props) {
     super();
-    props = this.props;
+    // props = this.props;
     this.state = {
-      userEvents: [],
       userForks: [],
       userPulls: []
     };
@@ -60,24 +58,21 @@ class UserEvents extends Component {
     this.setState({ userPulls });
   };
 
-  // requests user events from Github API events endpoint
-  getUserEvents = username => {
-    fetch(
-      `https://api.github.com/users/${username}/events?access_token=${token}`
-    )
-      .then(res => res.json())
-      .then(res => {
-        this.returnUserForks(res);
-        this.returnUserPulls(res, username);
-      })
-      .catch(err => console.log(err));
-  };
+  filterEvents() {
+    // const events = this.props.userEvents;
+    // const userPulls = this.returnUserPulls(events, this.props.username);
+    // const userForks = this.returnUserForks(events);
+    // this.setState({ userForks });
+  }
 
   componentDidMount() {
-    this.getUserEvents(this.props.username);
+    // this.getUserEvents(this.props.username);
+    this.props.fetchUserEvents(this.props.username);
+    // this.filterEvents();
   }
 
   render() {
+    console.log(this.props.userEvents);
     return (
       <div className="userHistory">
         <UserForks userForks={this.state.userForks} />
@@ -87,8 +82,12 @@ class UserEvents extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return { userEvents: state.userEvents.userEvents };
+};
+
 const ConnectedUserEvents = connect(
-  null,
+  mapStateToProps,
   { fetchUserEvents }
 )(UserEvents);
 

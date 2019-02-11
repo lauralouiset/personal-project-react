@@ -9,7 +9,7 @@ const SearchForm = props => {
       <input
         type="text"
         name="username"
-        value={props.formValue}
+        value={props.searchFormValue}
         onChange={props.handleChange}
       />
       <Button isLoggedIn={props.isLoggedIn} />
