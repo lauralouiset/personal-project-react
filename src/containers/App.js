@@ -40,7 +40,7 @@ class App extends Component {
     return (
       <React.Fragment>
         <Header />
-        <main className="App">
+        <main>
           {userStatus.logInError ? <ErrorMessage /> : null}
           {userStatus.isLoggedIn ? (
             <UserProfile

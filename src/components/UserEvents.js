@@ -15,8 +15,8 @@ class UserEvents extends Component {
           id: event.id,
           repo_name: event.payload.forkee.name,
           repo_url: event.payload.forkee.html_url,
-          forkedFrom: `https://github.com/${event.repo.name}`,
-          updated_at: event.payload.forkee.updated_at
+          forked_from: `https://github.com/${event.repo.name}`,
+          fork_updated_at: event.payload.forkee.updated_at
         };
 
         return [...acc, fork];
@@ -40,7 +40,7 @@ class UserEvents extends Component {
           PR_status: event.payload.pull_request.state,
           PR_merged: event.payload.pull_request.merged,
           PR_title: event.payload.pull_request.title,
-          pr_updatedat: event.payload.pull_request.updated_at
+          pr_updated_at: event.payload.pull_request.updated_at
         };
 
         return [...acc, pullRequest];
@@ -58,7 +58,7 @@ class UserEvents extends Component {
     const userForks = this.returnUserForks(events);
 
     return (
-      <div className="userHistory">
+      <div className="userEvents">
         <UserForks userForks={userForks} />
         <UserPullRequests userPulls={userPulls} />
       </div>

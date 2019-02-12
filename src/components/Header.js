@@ -2,7 +2,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <header>
+    <header className="bg-dark">
       <span className="logo">GitHub History</span>
     </header>
   );

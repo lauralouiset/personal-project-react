@@ -4,18 +4,20 @@ import ForkEvent from "./ForkEvent";
 
 const UserForks = ({ userForks }) => {
   return (
-    <React.Fragment>
-      <h2> Your Recent Forked Repos</h2>
-      <ul className="userForks">
+    <div className="event_container">
+      <h2 className="event_heading"> Your Recent Forked Repos</h2>
+      <ul className="event_grid userForks">
         {userForks.length > 0 ? (
           userForks.map(forkEvent => (
             <ForkEvent key={forkEvent.id} forkEvent={forkEvent} />
           ))
         ) : (
-          <p>You have no recent forked repos.</p>
+          <p className="event_default_message">
+            You have no recent forked repos.
+          </p>
         )}
       </ul>
-    </React.Fragment>
+    </div>
   );
 };
 

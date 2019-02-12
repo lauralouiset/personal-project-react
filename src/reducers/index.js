@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import userEventsReducer from "./userEvents";
 
 const initialUserState = {
   isLoggedIn: false,
@@ -7,18 +8,7 @@ const initialUserState = {
   userDetails: {}
 };
 
-// reducer for log in / log out
-
-// const logOutUser = (state = initialState, action) => {
-//   switch (action.type) {
-//     case "LOG_OUT":
-//       return { ...state, isLoggedIn: false, username: "" };
-//     default:
-//       return state;
-//   }
-// };
-
-const setUserLoginStatus = (state = initialUserState, action) => {
+const UserLoginStatusReducer = (state = initialUserState, action) => {
   switch (action.type) {
     case "LOG_IN_USER":
       return {
@@ -50,17 +40,9 @@ const setUserLoginStatus = (state = initialUserState, action) => {
   }
 };
 
-const userEvents = (userEvents = [], action) => {
-  if (action.type === "FETCH_USER_EVENTS") {
-    return action.payload;
-  } else {
-    return userEvents;
-  }
-};
-
 const reducers = combineReducers({
-  userStatus: setUserLoginStatus,
-  userEvents: userEvents
+  userStatus: UserLoginStatusReducer,
+  userEvents: userEventsReducer
 });
 
 export default reducers;

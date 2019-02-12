@@ -4,7 +4,7 @@ import Button from "./Button";
 
 const Login = props => {
   return (
-    <div>
+    <div className="login bg-light centerXY">
       <label htmlFor="username">Enter Your Github Username</label>
       <input
         type="text"
@@ -13,7 +13,9 @@ const Login = props => {
         value={props.inputValue}
         onChange={props.handleChange}
       />
-      <Button handleClick={props.handleLogIn}>Log In</Button>
+      <Button className={"primary"} handleClick={props.handleLogIn}>
+        Log In
+      </Button>
     </div>
   );
 };
