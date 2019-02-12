@@ -1,13 +1,11 @@
 import { combineReducers } from "redux";
 
-const initialState = {
+const initialUserState = {
   isLoggedIn: false,
   username: "",
   logInError: false,
   userDetails: {}
 };
-
-const initialEvents = [];
 
 // reducer for log in / log out
 
@@ -20,13 +18,13 @@ const initialEvents = [];
 //   }
 // };
 
-const setUserLoginStatus = (state = initialState, action) => {
+const setUserLoginStatus = (state = initialUserState, action) => {
   switch (action.type) {
     case "LOG_IN_USER":
       return {
         ...state,
         isLoggedIn: true,
-        loginError: false,
+        logInError: false,
         username: action.payload.username,
         userDetails: action.payload.userDetails
       };
@@ -38,11 +36,11 @@ const setUserLoginStatus = (state = initialState, action) => {
         username: "",
         userDetails: {}
       };
-    case "LOG_IN ERROR":
+    case "LOG_IN_ERROR":
       return {
         ...state,
         isLoggedIn: false,
-        loginError: true,
+        logInError: true,
         username: "",
         userDetails: {}
       };
@@ -52,25 +50,17 @@ const setUserLoginStatus = (state = initialState, action) => {
   }
 };
 
-// const userEvents = (userEvents = initialEvents, action) => {
-//   if ((action.type = "FETCH_USER_EVENTS")) {
-//     return action.payload;
-// 	}
-
-//   return userEvents;
-// };
-
-// const selectedSongReducer = (selectedSong = null, action) => {
-// 	if (action.type === "SONG_SELECTED") {
-// 		return action.payload;
-// 	}
-
-// 	return selectedSong;
-// };
+const userEvents = (userEvents = [], action) => {
+  if (action.type === "FETCH_USER_EVENTS") {
+    return action.payload;
+  } else {
+    return userEvents;
+  }
+};
 
 const reducers = combineReducers({
-  userLoginStatus: setUserLoginStatus
-  // userEvents
+  userStatus: setUserLoginStatus,
+  userEvents: userEvents
 });
 
 export default reducers;

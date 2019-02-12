@@ -1,7 +1,8 @@
 import React from "react";
 
-const Button = props => {
-  return <button type="Submit">Log In</button>;
-};
-
+const Button = ({ handleClick, className, children }) => (
+  <button onClick={handleClick} className={className}>
+    {children}
+  </button>
+);
 export default Button;

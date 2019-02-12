@@ -6,18 +6,9 @@ import UserForks from "./UserForks";
 import UserPullRequests from "./UserPullRequests";
 
 class UserEvents extends Component {
-  constructor(props) {
-    super();
-    // props = this.props;
-    this.state = {
-      userForks: [],
-      userPulls: []
-    };
-  }
-
   // filters events and gets user forkevents
   returnUserForks = events => {
-    const userForks = events
+    return events
       .filter(event => event.type === "ForkEvent")
       .reduce((acc, event) => {
         const fork = {
@@ -30,12 +21,11 @@ class UserEvents extends Component {
 
         return [...acc, fork];
       }, []);
-    this.setState({ userForks });
   };
 
   // filters events and returns user pull request events made BY user
   returnUserPulls = (events, username) => {
-    const userPulls = events
+    return events
       .filter(
         event =>
           event.type === "PullRequestEvent" &&
@@ -55,35 +45,32 @@ class UserEvents extends Component {
 
         return [...acc, pullRequest];
       }, []);
-    this.setState({ userPulls });
   };
 
-  filterEvents() {
-    // const events = this.props.userEvents;
-    // const userPulls = this.returnUserPulls(events, this.props.username);
-    // const userForks = this.returnUserForks(events);
-    // this.setState({ userForks });
-  }
-
   componentDidMount() {
-    // this.getUserEvents(this.props.username);
     this.props.fetchUserEvents(this.props.username);
-    // this.filterEvents();
   }
 
   render() {
-    console.log(this.props.userEvents);
+    const events = this.props.userEvents;
+
+    const userPulls = this.returnUserPulls(events, this.props.username);
+    const userForks = this.returnUserForks(events);
+
     return (
       <div className="userHistory">
-        <UserForks userForks={this.state.userForks} />
-        <UserPullRequests userPulls={this.state.userPulls} />
+        <UserForks userForks={userForks} />
+        <UserPullRequests userPulls={userPulls} />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return { userEvents: state.userEvents.userEvents };
+  return {
+    userEvents: state.userEvents,
+    username: state.userStatus.username
+  };
 };
 
 const ConnectedUserEvents = connect(

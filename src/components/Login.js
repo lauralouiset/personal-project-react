@@ -2,19 +2,20 @@ import React from "react";
 
 import Button from "./Button";
 
-const SearchForm = props => {
+const Login = props => {
   return (
-    <form onSubmit={props.handleSubmit}>
+    <div>
       <label htmlFor="username">Enter Your Github Username</label>
       <input
         type="text"
+        required
         name="username"
-        value={props.searchFormValue}
+        value={props.inputValue}
         onChange={props.handleChange}
       />
-      <Button isLoggedIn={props.isLoggedIn} />
-    </form>
+      <Button handleClick={props.handleLogIn}>Log In</Button>
+    </div>
   );
 };
 
-export default SearchForm;
+export default Login;
