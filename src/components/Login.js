@@ -13,9 +13,11 @@ const Login = props => {
         value={props.inputValue}
         onChange={props.handleChange}
       />
-      <Button className={"primary"} handleClick={props.handleLogIn}>
-        Log In
-      </Button>
+      <Button
+        className={"primary"}
+        value="Log In"
+        handleClick={props.handleLogIn}
+      />
     </div>
   );
 };

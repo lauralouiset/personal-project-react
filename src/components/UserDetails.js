@@ -12,10 +12,7 @@ const UserDetails = props => {
   } = props.userDetails;
 
   const username = props.username;
-
   const userURL = `https://github.com/${username}`;
-
-  console.log(userURL);
 
   return (
     <div className="userDetails bg-light">
@@ -27,9 +24,11 @@ const UserDetails = props => {
       <p> Location: {location}</p>
       <p>Following: {following}</p>
       <p>Followers: {followers}</p>
-      <Button className={"secondary"} handleClick={props.handleLogOut}>
-        Log Out
-      </Button>
+      <Button
+        className={"secondary"}
+        value="Log Out"
+        handleClick={props.handleLogOut}
+      />
     </div>
   );
 };

@@ -15,6 +15,7 @@ class UserEvents extends Component {
           id: event.id,
           repo_name: event.payload.forkee.name,
           repo_url: event.payload.forkee.html_url,
+          base_repo: event.repo.name,
           forked_from: `https://github.com/${event.repo.name}`,
           fork_updated_at: event.payload.forkee.updated_at
         };

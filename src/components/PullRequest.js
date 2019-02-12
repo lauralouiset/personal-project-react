@@ -1,8 +1,6 @@
 import React from "react";
 
 const PullRequest = props => {
-  console.log(props.pullRequest.PR_updated_at);
-
   const {
     repo_name,
     repo_url,
@@ -14,19 +12,24 @@ const PullRequest = props => {
   } = props.pullRequest;
 
   return (
-    <li className="event_item bg-light pullRequest">
-      <div className="pr_status_container">
-        <span className={PR_status}>{PR_status.toUpperCase()}</span>
-        {PR_merged ? <span className="merged">MERGED</span> : null}
+    <li className="event_item bg-light">
+      <div className="event_icon">
+        <img src="./assets/git_pull.png" alt="git fork icon" />
       </div>
-      <h3>
-        <a href={repo_url}>{repo_name}</a>
-      </h3>
-      <p>
-        <a href={PR_url}>{PR_title}</a>
-      </p>
+      <div className="event_info">
+        <div className="pr_status_container">
+          <span className={PR_status}>{PR_status.toUpperCase()}</span>
+          {PR_merged ? <span className="merged">MERGED</span> : null}
+        </div>
+        <h3>
+          <a href={repo_url}>{repo_name}</a>
+        </h3>
+        <p>
+          <a href={PR_url}>{PR_title}</a>
+        </p>
 
-      <p className="updatedAt">Last Updated at {PR_updated_at}</p>
+        <p className="updatedAt">Last Updated at {PR_updated_at}</p>
+      </div>
     </li>
   );
 };
